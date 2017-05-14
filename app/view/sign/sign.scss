@@ -1,0 +1,129 @@
+@charset "utf-8";
+@import "compass/typography";
+@import "compass/css3";
+
+.header-top{
+	background:#fff;
+	border-bottom:1px solid #bcbbc1;
+	padding:1rem;
+	text-align:center;
+	strong{
+		font-size:1.2rem;
+	}
+	a{
+		color:#0c61ff;
+		float:left;
+		font-size:1.2rem;
+		text-decoration:none;
+	}
+}
+.sign{
+	background:#fff;
+	border-bottom:1px solid #bcbbc1;
+	border-top:1px solid #bcbbc1;
+	margin-top:2rem;
+	ul{
+		margin-left:10px;
+		li{
+			border-top:1px solid #bcbbc1;
+			padding:0.6rem 0;
+			input{
+				border:0;
+				font-size:1rem;
+				height:1.5rem;
+				outline:none;
+				padding:0.8rem;
+				width:90%;
+			}
+			.sign-tel{
+				width:60%;
+			}
+			span{
+				border:1px solid #bcbbc1;
+				display:inline-block;
+				float:right;
+				margin-right:10px;
+				margin-top:10px;
+				min-width:80px;
+				padding:0.5rem 0.6rem;
+				text-align:center;
+				@include border-radius(5px);
+			}
+			&:first-child{
+				border-top:0;
+			}
+		}
+	}
+	.disabled{
+		background:#bcbbc1;
+		color:#666;
+	}
+}
+.sign-login{
+	color:#999;
+	margin-top:2rem;
+	text-align:center;
+	em{
+		font-size:0.8rem;
+	}
+	span{
+		background:#0c61ff;
+		color:#fff;
+		display:inline-block;
+		margin-top:1rem;
+		padding:0.8rem 5%;
+		text-align:center;
+		width:80%;
+		@include border-radius(5px);
+	}
+	.disabled{
+		background:#4e8cff;
+	}
+}
+footer{
+	bottom:4rem;
+	position:relative;
+}
+.footer-line{
+	height:30px;
+	position:relative;
+	hr{
+		border-top:1px solid #bcbbc1;
+		margin-left:5%;
+		width:90%;
+	}
+	span{
+		background:#f7f7f7;
+		display:inline-block;
+		height:30px;
+		left:50%;
+		margin-left:-60px;
+		margin-top:-20px;
+		position:absolute;
+		text-align:center;
+		top:50%;
+		width:120px;
+	}
+}
+.footer-list{
+	display:inline-block;
+	text-align:center;
+	width:33.3%;
+	img{
+		height:50px;
+		width:50px;
+	}
+}
+.alert-info{
+	background:rgba(0,0,0,0.8);
+	color:#fff;
+	height:50px;
+	line-height:50px;
+	left:50%;
+	margin-left:-90px;
+	top:25px;
+	position:absolute;
+	text-align:center;
+	width:180px;
+	@include border-radius(5px);
+}

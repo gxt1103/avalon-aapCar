@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>临港拼车</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--开启对web app的支持-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--主要是正对苹果手机将数字自动识别为号码-->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 忽略识别邮箱，主要是针对安卓手机会自动将符合邮箱格式的字符串识别为邮箱地址-->
+    <meta content="email=no" name="format-detection" />
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+</head>
+
+<body ms-controller="carApp" class="ms-controller">
+    <header>
+        <div class="header-top"><a href="index.html">关闭</a><strong>{{@title}}</strong></div>
+    </header>
+    <section>
+        <div class="sign">
+            <ul>
+                <li><input class="sign-tel" type="text" placeholder="请输入手机号码" :duplex="@userName" ms-on-keyup="@keyVerify"> <span class="J-Send" ms-on-tap="@getCode($event)">获取验证码</span></li>
+                <li><input type="text" placeholder="请输入验证码" :duplex="@code" ms-on-keyup="@keyVerify"></li>
+            </ul>
+        </div>
+        <div class="sign-login">
+            <em>验证码将以短信形式发送到您的手机，请注意查收</em>
+            <span :class="[@isClick?'':'disabled']" ms-on-tap="@login($event)">登录</span>
+        </div>
+    </section>
+    <footer>
+      <div class="footer-line">
+        <hr>
+        <span>快捷登录</span>
+      </div>
+      <div class="footer-list"><img src="../source/img/qq.png"></div>
+      <div class="footer-list"><img src="../source/img/wechat.png"></div>
+      <div class="footer-list"><img src="../source/img/sina.png"></div>
+    </footer>
+   <div class="alert-info" :if="@isAlert">
+        {{@alertInfo}}
+    </div>
+    <script src="./dll/vendor.js"></script>
+</body>
+</html>

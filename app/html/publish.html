@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>临港拼车</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--开启对web app的支持-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--主要是正对苹果手机将数字自动识别为号码-->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 忽略识别邮箱，主要是针对安卓手机会自动将符合邮箱格式的字符串识别为邮箱地址-->
+    <meta content="email=no" name="format-detection" />
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=425cc838ddc2f2ac540baf48e7265a16"></script> 
+</head>
+
+<body ms-controller="carApp" class="ms-controller">
+    <header>
+        <div class="header-top">
+            <a class="icon-left-1" :attr="{href:@returnUrl}" :if="!@isAddress"></a>
+            <a class="icon-left-1" href="javascript:void(0);" :if="@isAddress" ms-on-tap="@closeAddress"></a>
+            <strong>{{@title}}</strong> 
+            <a class="float-right" href="javascript:void(0);" :if="@isAddress" ms-on-tap="@confirmAddress">确定</a>
+        </div>
+    </header>
+    <section :visible="!@isAddress">
+        <h1>行程信息(必填)</h1>
+        <ul>
+            <li><b>联系电话：</b><strong :if="@tel">{{@tel}}</strong><em :if="!@tel">请设置</em><i :if="!@tel">></i></li>
+            <li ms-on-tap="@selectDime($event)"><b>出发时间：</b><span :visible="@timeName">{{@timeName}}</span><em :if="!@timeName">请设置</em><i>></i></li>
+            <li ms-on-tap="@slectAddress(0)"><b>出发地：</b><span :visible="@start">{{@start}}</span><em :if="!@start">请设置</em><i>></i></li>
+            <li ms-on-tap="@slectAddress(1)"><b>目的地：</b><span :visible="@end">{{@end}}</span><em :if="!@end">请设置</em><i>></i></li>
+            <li ms-on-tap="@selectMode"><b>类型：</b><span :visible="@mode">{{@mode}}</span><em :if="!@mode">请设置</em><i>></i></li>
+            <li><b>常用订单：</b> 
+                <label :class="[@isNormal ? 'order-normal active':'order-normal']" :click="@isNormal = !@isNormal">
+                    <em></em>
+                </label>
+            </li>
+        </ul>
+        <h2>请认真核对信息，以免耽误您的行程</h2>
+        <h1>说明(选填)</h1>
+        <ul>
+            <li ms-on-tap="@realTime"><b>及时性要求：</b><span :visible="@requires">{{@requires}}</span><em :visible="!@requires">请设置</em><i>></i></li>
+            <li><b>备注：</b>
+                <textarea placeholder="请备注车牌、价格、人数、老人、孕妇、婴幼儿、行李等" :duplex="@remark" ms-on-focus="@showRelative" ms-on-blur="@hideRelative"></textarea>
+            </li>
+        </ul>
+    </section>
+    <footer :visible="!@isAddress">
+      <div class="footer-publish">发布行程</div>
+    </footer>
+    <div class="publish-address" :if="@isAddress">
+        <div class="address-search">
+            <input type="text" placeholder="小区、交叉路口、门牌号、公交站、楼宇" ms-on-keyup="@searchList($event)">
+        </div>
+        <div class="address-list">
+            <ul>
+                <li ms-on-tap="@selectLi($event)">浦东新区东茗苑</li>
+            </ul>
+        </div>
+    </div>
+    <div class="publish-info" :if="@isSelectType">
+        <div class="screen"></div>
+        <div class="publish-select">
+            <ul>
+                <li ms-on-tap="@selectType('1')">找车</li>
+                <li ms-on-tap="@selectType('2')">找人</li>
+            </ul>
+        </div>
+    </div>
+    <div class="select-time" :visible="@isSelectTime">
+        <span ms-on-tap="@confirmSelect">确认</span>
+        <div class="select-time-ul" id="select_time">
+            <ul>
+                <li>&nbsp;</li>
+                <li :for="list in @selectTime" :attr="{'data-type':list.types}">{{list.names}}</li>
+                <li>&nbsp;</li>
+            </ul>
+        </div>
+        <div class="select-time-border">
+
+        </div>
+    </div>
+    <script src="./dll/vendor.js"></script>
+</body>
+</html>

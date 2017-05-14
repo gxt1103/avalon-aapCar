@@ -1,0 +1,54 @@
+/*@import "../font/icon/iconfont.css";*/
+@import "compass/typography";
+@import "compass/css3";
+@import "compass/reset";
+
+
+@import "../font/fonticon";
+
+body {
+  background:#f7f7f7;
+}
+
+.ms-controller{
+  visibility: hidden
+}
+header{
+	position:absolute;
+	top:0;
+	width:100%;
+	z-index:2;
+}
+.border-0{
+	border:0!important;
+}
+section{
+	overflow-y:auto;
+	position:relative;
+}
+footer{
+	background:#f7f7f7;
+	border-top:#bcbbc1;
+	bottom:0;
+	position:absolute;
+	width:100%;
+	z-index:2;
+}
+.footer-list{
+	color:#999;
+	display:inline-block;
+	font-size:0.8rem;
+	padding:0.4rem 0;
+	text-align:center;
+	text-decoration:none;
+	width:50%;
+	img{
+		width:1.5rem;
+	}
+}
+.footer-active{
+	color:#0c61ff;
+}
+.float-right{
+	float:right!important;
+}

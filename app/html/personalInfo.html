@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>临港拼车</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--开启对web app的支持-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--主要是正对苹果手机将数字自动识别为号码-->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 忽略识别邮箱，主要是针对安卓手机会自动将符合邮箱格式的字符串识别为邮箱地址-->
+    <meta content="email=no" name="format-detection" />
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+</head>
+
+<body ms-controller="carApp" class="ms-controller">
+    <header>
+        <div class="header-top"><a class="icon-left-1" href="personal.html"></a><strong>个人资料</strong></div>
+    </header>
+    <section>
+        
+        <div class="personal-list">
+           <ul>
+               <li><b>昵称</b>  <input type="text" :duplex="@userName"></li>
+               <li ms-on-tap="@selectSex"><b>性别</b> {{@sex}} <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@selectCar"><b>拼车类型</b> {{@carType}} <i class="icon-left-right"></i> </li>
+               <li><b>是否是车主</b>  
+                  <label :class="[@isCar ? 'order-normal active':'order-normal']" :click="@isCar = !@isCar">
+                        <em></em>
+                    </label>
+                </li>
+               <li><b>是否有照片</b>  
+                    <label :class="[@isPhoto ? 'order-normal active':'order-normal']" :click="@isPhoto = !@isPhoto">
+                        <em></em>
+                    </label>
+                </li>
+           </ul>
+        </div>
+        
+    </section>
+
+    <footer>
+       <div class="footer-publish" ms-on-tap="@updateInfo">编辑</div>
+    </footer>
+    <div class="publish-info" :if="@isType">
+        <div class="screen"></div>
+        <div class="publish-select">
+            <ul>
+                <li :for="list in @types" ms-on-tap="@selectType(list)">{{list.text}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="alert-info" :if="@isAlert">
+        {{@alertInfo}}
+    </div>
+    <script src="./dll/vendor.js"></script>
+</body>
+</html>

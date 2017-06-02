@@ -1,6 +1,6 @@
 module.exports = {
   mainJS  : false, // 添加公共main.js
-  devHost : '0.0.0.0',
+  devHost : '127.0.0.1',
   devPort : '3000',
   viewType: 'html', // pug,jade,html...
   cssType : 'scss', // sass,scss,less,pcss,css...

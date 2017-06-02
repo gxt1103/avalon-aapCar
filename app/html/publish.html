@@ -35,11 +35,11 @@
     <section :visible="!@isAddress">
         <h1>行程信息(必填)</h1>
         <ul>
-            <li><b>联系电话：</b><strong :if="@tel">{{@tel}}</strong><em :if="!@tel">请设置</em><i :if="!@tel">></i></li>
-            <li ms-on-tap="@selectDime($event)"><b>出发时间：</b><span :visible="@timeName">{{@timeName}}</span><em :if="!@timeName">请设置</em><i>></i></li>
-            <li ms-on-tap="@slectAddress(0)"><b>出发地：</b><span :visible="@start">{{@start}}</span><em :if="!@start">请设置</em><i>></i></li>
-            <li ms-on-tap="@slectAddress(1)"><b>目的地：</b><span :visible="@end">{{@end}}</span><em :if="!@end">请设置</em><i>></i></li>
-            <li ms-on-tap="@selectMode"><b>类型：</b><span :visible="@mode">{{@mode}}</span><em :if="!@mode">请设置</em><i>></i></li>
+            <li><b>联系电话：</b><strong :if="@tel">{{@tel}}</strong><em :if="!@tel">请设置</em><i class="icon-left-right" :if="!@tel">></i></li>
+            <li ms-on-tap="@selectDime($event)"><b>出发时间：</b><span :visible="@timeName">{{@timeName}}</span><em :if="!@timeName">请设置</em><i class="icon-left-right"></i></li>
+            <li ms-on-tap="@slectAddress(0)"><b>出发地：</b><span :visible="@start">{{@start}}</span><em :if="!@start">请设置</em><i class="icon-left-right"></i></li>
+            <li ms-on-tap="@slectAddress(1)"><b>目的地：</b><span :visible="@end">{{@end}}</span><em :if="!@end">请设置</em><i class="icon-left-right"></i></li>
+            <li ms-on-tap="@selectMode"><b>类型：</b><span :visible="@mode">{{@mode}}</span><em :if="!@mode">请设置</em><i class="icon-left-right"></i></li>
             <li><b>常用订单：</b> 
                 <label :class="[@isNormal ? 'order-normal active':'order-normal']" :click="@isNormal = !@isNormal">
                     <em></em>
@@ -49,22 +49,22 @@
         <h2>请认真核对信息，以免耽误您的行程</h2>
         <h1>说明(选填)</h1>
         <ul>
-            <li ms-on-tap="@realTime"><b>及时性要求：</b><span :visible="@requires">{{@requires}}</span><em :visible="!@requires">请设置</em><i>></i></li>
+            <li ms-on-tap="@realTime"><b>及时性要求：</b><span :visible="@requires">{{@requires}}</span><em :visible="!@requires">请设置</em><i class="icon-left-right"></i></li>
             <li><b>备注：</b>
                 <textarea placeholder="请备注车牌、价格、人数、老人、孕妇、婴幼儿、行李等" :duplex="@remark" ms-on-focus="@showRelative" ms-on-blur="@hideRelative"></textarea>
             </li>
         </ul>
     </section>
     <footer :visible="!@isAddress">
-      <div class="footer-publish">发布行程</div>
+      <div class="footer-publish" ms-on-tap="@publishInfo">发布行程</div>
     </footer>
     <div class="publish-address" :if="@isAddress">
         <div class="address-search">
-            <input type="text" placeholder="小区、交叉路口、门牌号、公交站、楼宇" ms-on-keyup="@searchList($event)">
+            <input type="text" placeholder="小区、交叉路口、门牌号、公交站、楼宇" ms-on-focus="@searchList($event)" ms-on-blur="@searchBlur">
         </div>
         <div class="address-list">
             <ul>
-                <li ms-on-tap="@selectLi($event)">浦东新区东茗苑</li>
+                <li ms-on-tap="@selectLi($event)" :for="list in @mapList" :attr="{'data-location':list.location,'data-name':list.name,'data-address':list.address}">{{list.name}}<br>{{list.address}}</li>
             </ul>
         </div>
     </div>
@@ -89,6 +89,9 @@
         <div class="select-time-border">
 
         </div>
+    </div>
+    <div class="alert-info" :if="@isAlert">
+        {{@alertInfo}}
     </div>
     <script src="./dll/vendor.js"></script>
 </body>

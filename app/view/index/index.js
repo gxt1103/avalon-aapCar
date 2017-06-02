@@ -191,10 +191,25 @@ let vm = avalon.define({
 		});
 
 		//判断是否登录
+		var loginUrl = "http://maomap.com/Api/userinfo/fetchuserinfo/?output=jsonp";
 		var userId = $.cookie("userId");
 		if (userId) {
+			// var data = {
+			// 	userid: userId
+			// };
+			// utils.get(loginUrl, data, function(data) {
+			// 	if (data.errno == 0) {
+			// 		_this.isLogined = true;
+			// 	} else {
+			// 		_this.alertInfo = rsp.errmsg;
+			// 		_this.isAlert = true;
+			// 		setTimeout(function() {
+			// 			_this.isAlert = false;
+			// 		}, 1000);
+			// 	}
+			// });
 			_this.isLogined = true;
-		}else{
+		} else {
 			_this.isLogined = false;
 		}
 	},

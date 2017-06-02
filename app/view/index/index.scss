@@ -18,8 +18,8 @@
 }
 .header-menu{
 	background:#fff;
-	border-bottom:1px solid #bcbbc1;
-	border-top:1px solid #bcbbc1;
+	border-bottom:1px solid #ddd;
+	border-top:1px solid #ddd;
 	height:1rem;
 	padding:0.6rem 0;
 	ul{
@@ -31,7 +31,7 @@
 		width:100%;
 		z-index:2;
 		li{
-			border-top:1px solid #bcbbc1;
+			border-top:1px solid #ddd;
 			font-size:1rem;
 			padding:0.5rem;
 			span{
@@ -91,7 +91,7 @@
 .car-ul{
 	li{
 		background:#fff;
-		border-top:1px solid #bcbbc1;
+		border-top:1px solid #ddd;
 		padding:0.5rem;
 		position:relative;
 		&:first-child{
@@ -130,6 +130,7 @@
 					font-size:0.8rem;
 					margin-left:10px;
 					padding:0.2rem 0.4rem;
+					padding-top:0.3rem;
 				}
 			}
 			strong{
@@ -178,7 +179,7 @@
 	}
 	.car-none{
 		background:#f7f7f7;
-		border-top:1px solid #bcbbc1;
+		border-top:1px solid #ddd;
 		color:#999;
 		text-align:center;
 	}
@@ -208,23 +209,9 @@
 	z-index:2;
 	ul{
 		li{
-			border-top:1px solid #bcbbc1;
+			border-top:1px solid #ddd;
 			padding:1rem;
 			text-align:center;
 		}
 	}
-}
-.alert-info{
-	background:rgba(0,0,0,0.5);
-	color:#fff;
-	height:50px;
-	line-height:50px;
-	left:50%;
-	margin-left:-75px;
-	margin-top:-25px;
-	position:absolute;
-	text-align:center;
-	top:50%;
-	width:150px;
-	@include border-radius(5px);
 }

@@ -4,7 +4,7 @@
 
 .header-top{
 	background:#fff;
-	border-bottom:1px solid #bcbbc1;
+	border-bottom:1px solid #ddd;
 	padding:1rem;
 	text-align:center;
 	strong{
@@ -19,13 +19,13 @@
 }
 .sign{
 	background:#fff;
-	border-bottom:1px solid #bcbbc1;
-	border-top:1px solid #bcbbc1;
+	border-bottom:1px solid #ddd;
+	border-top:1px solid #ddd;
 	margin-top:2rem;
 	ul{
 		margin-left:10px;
 		li{
-			border-top:1px solid #bcbbc1;
+			border-top:1px solid #ddd;
 			padding:0.6rem 0;
 			input{
 				border:0;
@@ -39,7 +39,7 @@
 				width:60%;
 			}
 			span{
-				border:1px solid #bcbbc1;
+				border:1px solid #ddd;
 				display:inline-block;
 				float:right;
 				margin-right:10px;
@@ -55,7 +55,7 @@
 		}
 	}
 	.disabled{
-		background:#bcbbc1;
+		background:#ddd;
 		color:#666;
 	}
 }
@@ -88,7 +88,7 @@ footer{
 	height:30px;
 	position:relative;
 	hr{
-		border-top:1px solid #bcbbc1;
+		border-top:1px solid #ddd;
 		margin-left:5%;
 		width:90%;
 	}
@@ -113,17 +113,4 @@ footer{
 		height:50px;
 		width:50px;
 	}
-}
-.alert-info{
-	background:rgba(0,0,0,0.8);
-	color:#fff;
-	height:50px;
-	line-height:50px;
-	left:50%;
-	margin-left:-90px;
-	top:25px;
-	position:absolute;
-	text-align:center;
-	width:180px;
-	@include border-radius(5px);
 }

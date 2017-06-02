@@ -52,3 +52,17 @@ footer{
 .float-right{
 	float:right!important;
 }
+.alert-info{
+	background:rgba(0,0,0,0.5);
+	color:#fff;
+	height:50px;
+	line-height:50px;
+	left:50%;
+	margin-left:-75px;
+	margin-top:-25px;
+	position:absolute;
+	text-align:center;
+	top:50%;
+	width:150px;
+	@include border-radius(5px);
+}

@@ -26,11 +26,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-left-right:before {
+  content: "\e909";
+}
 .icon-car:before {
   content: "\e900";
+  color: #79b7ff;
 }
 .icon-end:before {
   content: "\e901";
+  color: #f94f00;
 }
 .icon-left-1:before {
   content: "\e902";
@@ -40,16 +45,20 @@
 }
 .icon-point:before {
   content: "\e904";
+  color: #82c225;
 }
 .icon-right-2:before {
   content: "\e905";
 }
 .icon-step:before {
   content: "\e906";
+  color: #1296db;
 }
 .icon-train:before {
   content: "\e907";
+  color: #099f4f;
 }
 .icon-train-1:before {
   content: "\e908";
+  color: #37c97f;
 }

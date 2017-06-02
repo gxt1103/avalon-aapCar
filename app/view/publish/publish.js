@@ -1,6 +1,6 @@
 //发布行程
 let utils = require("../../source/js/utils");
-let scrollTimes, placeSearch;
+let scrollTimes, placeSearch, times, nextval;
 let vm = avalon.define({
 	$id: "carApp",
 	isLogined: false,
@@ -8,14 +8,19 @@ let vm = avalon.define({
 	isSelectType: false,
 	isSelectTime: false,
 	isAddress: false,
+	isAlert: false,
+	alertInfo: "",
 	addressType: "",
 	mode: "",
+	modeType: "",
 	timeName: "",
+	serviceTime: "",
 	title: "",
 	tel: "",
 	start: "",
 	end: "",
 	requires: "+/-5分钟",
+	timeType: "1",
 	remark: "",
 	types: "",
 	currentVal: 2,
@@ -64,6 +69,18 @@ let vm = avalon.define({
 		types: "9",
 		names: "+/-2小时"
 	}],
+	isOften: false,
+	startLat: "",
+	startLng: "",
+	startName: "",
+	startAddress: "",
+	endLat: "",
+	endLng: "",
+	endName: "",
+	endAddress: "",
+	currentLng: "",
+	currentLat: "",
+	sessionid: "",
 	realTime: function() {
 		var _this = this;
 		_this.isSelectTime = true;
@@ -75,6 +92,7 @@ let vm = avalon.define({
 				var index = parseInt((this.y / 60) * (-1));
 				var selectVal = _this.selectTime[index].names;
 				_this.requires = selectVal;
+				_this.timeType = _this.selectTime[index].types;
 				_this.currentVal = index;
 			}
 		});
@@ -100,7 +118,17 @@ let vm = avalon.define({
 		$(event.target).date({
 			theme: "datetime"
 		}, function(val) {
-			_this.timeName = val;
+			_this.serviceTime = val;
+			var times = new Date(val);
+			var weeks = new Array("日", "一", "二", "三", "四", "五", "六");
+			var weekDays = times.getDay();
+			var month = times.getMonth() + 1;
+			var days = times.getDate();
+			var hours = times.getHours();
+			var minutes = times.getMinutes();
+			var weekDay = "周" + weeks[weekDays];
+			var datestr = month + "月" + days + "日" + "(" + weekDay + ")" + " " + hours + ":" + minutes;
+			_this.timeName = datestr
 		});
 	},
 	selectType: function(val) {
@@ -109,6 +137,7 @@ let vm = avalon.define({
 		} else {
 			this.mode = "找人";
 		}
+		this.modeType = val;
 		this.isSelectType = false;
 	},
 	showRelative: function() {
@@ -117,7 +146,34 @@ let vm = avalon.define({
 	hideRelative: function() {
 		$("footer").removeAttr("style");
 	},
-
+	locationMap: function() {
+		var _this = this;
+		var mapObj = new AMap.Map('iCenter');
+		mapObj.plugin('AMap.Geolocation', function() {
+			var geolocation = new AMap.Geolocation({
+				enableHighAccuracy: true, //是否使用高精度定位，默认:true
+				timeout: 10000, //超过10秒后停止定位，默认：无穷大
+				maximumAge: 0, //定位结果缓存0毫秒，默认：0
+				convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+				showButton: true, //显示定位按钮，默认：true
+				buttonPosition: 'LB', //定位按钮停靠位置，默认：'LB'，左下角
+				buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+				showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+				showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+				panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+				zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+			});
+			mapObj.addControl(geolocation);
+			geolocation.getCurrentPosition();
+			AMap.event.addListener(geolocation, 'complete', function(data) {
+				_this.currentLng = data.position.getLng();
+				_this.currentLat = data.position.getLat();
+			}); //返回定位信息
+			AMap.event.addListener(geolocation, 'error', function(data) {
+				console.log(data.message);
+			}); //返回定位出错信息
+		});
+	},
 	slectAddress: function(val) {
 		this.isAddress = true;
 		this.addressType = val;
@@ -148,20 +204,121 @@ let vm = avalon.define({
 		$(event.target).addClass("active");
 	},
 	searchList: function(event) {
-		var vals = $(event.target).val();
-		vals = vals.replace(/^\s+/,'').replace(/\s+$/,'');
-		if (vals.length > 0) {
-			placeSearch.search(vals, function(status, result) {
-				console.log("status:" + status)
-				console.log("result:" + result)
-			})
-		}
+		var vals;
+		var _this = this;
+		times = setInterval(function() {
+			vals = $(event.target).val();
+			vals = vals.replace(/^\s+/, '').replace(/\s+$/, '');
+			if (vals != '' && vals != nextval) {
+				if (_this.addressType == "0") {
+					placeSearch.searchNearBy(vals, [_this.currentLng, _this.currentLat], 1000, function(status, result) {
+						if (status === 'complete' && result.info === 'OK') {
+							_this.mapList.removeAll();
+							_this.mapList.pushArray(result.poiList.pois);
+						}
+					});
+				} else {
+					placeSearch.search(vals, function(status, result) {
+						if (status === 'complete' && result.info === 'OK') {
+							_this.mapList.removeAll();
+							_this.mapList.pushArray(result.poiList.pois);
+						}
+					});
+				}
+			}
+			nextval = vals;
+		}, 100);
+
+	},
+	searchBlur: function() {
+		clearInterval(times);
 	},
 	confirmAddress: function() {
+		var _this = this;
+		var locations = $(".address-list").find(".active").attr("data-location");
+		var names = $(".address-list").find(".active").attr("data-name");
+		var address = $(".address-list").find(".active").attr("data-address");
 
+		if (this.addressType == "0") {
+			_this.startLat = locations.substr(locations.indexOf(",") + 1, locations.length);
+			_this.startLng = locations.substr(0, locations.indexOf(","));
+			_this.startName = names;
+			_this.startAddress = address;
+			_this.start = names;
+		} else {
+			_this.endLat = locations.substr(locations.indexOf(",") + 1, locations.length);
+			_this.endLng = locations.substr(0, locations.indexOf(","));
+			_this.endName = names;
+			_this.endAddress = address;
+			_this.end = names;
+		}
+		_this.mapList.removeAll();
+		_this.isAddress = false;
 	},
 	closeAddress: function() {
 		this.isAddress = false;
+	},
+	alertInfos: function(val, callback) {
+		var _this = this;
+		_this.alertInfo = val;
+		_this.isAlert = true;
+		setTimeout(function() {
+			_this.isAlert = false;
+			if (callback) {
+				callback();
+			}
+		}, 1000);
+	},
+	publishInfo: function() {
+		var _this = this;
+		if (_this.serviceTime == "") {
+			_this.alertInfo("请选择出发时间");
+			return;
+		}
+		if (_this.startLat == "") {
+			_this.alertInfo("请选择出发地");
+			return;
+		}
+		if (_this.endLat == "") {
+			_this.alertInfo("请选择目的地");
+			return;
+		}
+		if (_this.modeType == "") {
+			_this.alertInfo("请选择类型");
+			return;
+		}
+		var data = {
+			sessionid: _this.sessionid,
+			phone: _this.tel,
+			serviceTime: _this.serviceTime,
+			timeError: _this.timeType,
+			validTime: 30,
+			isOften: _this.isNormal,
+			lineType: _this.types,
+			reqType: _this.modeType,
+			timeType: 0,
+			startLat: _this.startLat,
+			startLng: _this.startLng,
+			startName: _this.startName,
+			startAddress: _this.startAddress,
+			startRange: 1000,
+			endLat: _this.endLat,
+			endLng: _this.endLng,
+			endName: _this.endName,
+			endAddress: _this.endAddress,
+			endRange: 1000,
+			remark: _this.remark
+		};
+		var publishUrl = "http://maomap.com/Api/line/publish/?output=jsonp";
+		utils.post(publishUrl, data, function(data) {
+			if (data.errno == 0) {
+				_this.alertInfos("发布路线成功", function() {
+					window.location.href = "index.html";
+				});
+			} else {
+				_this.alertInfos(data.errmsg);
+			}
+		});
 	},
 	readyLoad: function() {
 		var _this = this;
@@ -177,17 +334,17 @@ let vm = avalon.define({
 				if (data.errno == 0) {
 					_this.isLogined = true;
 					_this.tel = data.data.phone
+					_this.sessionid = data.data.userid;
 				} else {
-					_this.alertInfo = rsp.errmsg;
-					_this.isAlert = true;
-					setTimeout(function() {
-						_this.isAlert = false;
-					}, 1000);
+					_this.alertInfo(data.errmsg, function(){
+						window.location.href = "index.html";
+					});
 				}
 			});
 
 		} else {
 			_this.isLogined = false;
+			window.location.href = "index.html";
 		}
 		_this.types = types;
 		switch (types) {
@@ -206,6 +363,7 @@ let vm = avalon.define({
 			default:
 				this.title = "免费";
 		}
+		_this.locationMap();
 	}
 
 });

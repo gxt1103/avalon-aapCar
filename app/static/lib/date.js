@@ -121,12 +121,8 @@
                 var time = years + "-" + month + "-" + days;
                 // time = time.replace(/-/g, ':').replace(' ', ':');
                 // time = time.split(':');
-                var times = new Date(time);
-                times = new Date(times);
-                var weeks = new Array("日", "一", "二", "三", "四", "五", "六");
-                var weekDays = times.getDay();
-                var weekDay = "周" + weeks[weekDays];
-                datestr = month + "月" + days + "日" + "(" + weekDay + ")";
+               
+                datestr = time;
 
                 if (datetime) {
                     // if (Math.round(indexS) === 1) { //下午

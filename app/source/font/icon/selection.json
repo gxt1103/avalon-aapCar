@@ -406,6 +406,33 @@
       "setIdx": 0,
       "setId": 9,
       "iconIdx": 9
+    },
+    {
+      "icon": {
+        "paths": [
+          "M896 384l-313.5-40.781-134.5-279.219-134.531 279.219-313.469 40.781 230.469 208.875-59.469 303.063 277-148.812 277.062 148.812-59.562-303.063 230.5-208.875z"
+        ],
+        "width": 896,
+        "attrs": [],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "tags": [
+          "star"
+        ],
+        "defaultCode": 61482,
+        "grid": 16
+      },
+      "attrs": [],
+      "properties": {
+        "id": 159,
+        "order": 22,
+        "prevSize": 32,
+        "code": 61482,
+        "name": "star"
+      },
+      "setIdx": 5,
+      "setId": 4,
+      "iconIdx": 158
     }
   ],
   "height": 1024,

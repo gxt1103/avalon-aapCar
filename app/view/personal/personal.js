@@ -3,6 +3,8 @@ let utils = require("../../source/js/utils");
 let vm = avalon.define({
 	$id: "carApp",
 	isLogined: false,
+	isAlert: false,
+	alertInfo:"",
 	userName: "",
 	tel:"",
 	personalInfo: function(){
@@ -19,14 +21,14 @@ let vm = avalon.define({
 	},
 	selectAddress: function(){
 		if(this.isLogined){
-
+			window.location.href = "address.html";
 		}else{
 			window.location.href = "sign.html?next=personal.html";
 		}
 	},
 	selectTrap: function(){
 		if(this.isLogined){
-
+			window.location.href = "trip.html";
 		}else{
 			window.location.href = "sign.html?next=personal.html";
 		}
@@ -40,7 +42,7 @@ let vm = avalon.define({
 	},
 	set: function(){
 		if(this.isLogined){
-
+			window.location.href = "set.html";
 		}else{
 			window.location.href = "sign.html?next=personal.html";
 		}

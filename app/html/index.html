@@ -42,35 +42,35 @@
     </header>
     <section>
         <ul class="car-ul" ms-on-swipeup="@upData">
-            <li ms-for="list in @listData">
+            <li ms-for="list in @listData" ms-on-tap="@detail(list.lineid)">
                 <div class="car-list">
-                    <span class="car-icon" ms-if="list.reqType == 2">车</span>
-                    <span class="car-icon car-icon-ren" ms-if="list.reqType == 1">人</span>
+                    <span class="car-icon" ms-visible="list.reqType == 2">车</span>
+                    <span class="car-icon car-icon-ren" ms-visible="list.reqType == 1">人</span>
                     <div class="car-list-label">
                         <label>
                             {{list.serviceTime | formTime}} 
-                            <b :if="list.lineType == '0'">实时</b>
-                            <b :if="list.lineType == '1'">上班</b>
-                            <b :if="list.lineType == '2'">下班</b>
-                            <b :if="list.lineType == '3'">接机</b>
-                            <b :if="list.lineType == '4'">送机</b>
-                            <b :if="list.lineType == '5'">接火车</b>
-                            <b :if="list.lineType == '6'">送火车</b>
-                            <b :if="list.lineType == '7'">去市区</b>
-                            <b :if="list.lineType == '8'">临港地区</b>
-                            <b :if="list.lineType == '9'">晚班车</b>
-                            <b :if="list.lineType == '10'">免费</b>
+                            <b :visible="list.lineType == '0'">实时</b>
+                            <b :visible="list.lineType == '1'">上班</b>
+                            <b :visible="list.lineType == '2'">下班</b>
+                            <b :visible="list.lineType == '3'">接机</b>
+                            <b :visible="list.lineType == '4'">送机</b>
+                            <b :visible="list.lineType == '5'">接火车</b>
+                            <b :visible="list.lineType == '6'">送火车</b>
+                            <b :visible="list.lineType == '7'">去市区</b>
+                            <b :visible="list.lineType == '8'">临港地区</b>
+                            <b :visible="list.lineType == '9'">晚班车</b>
+                            <b :visible="list.lineType == '10'">免费</b>
                         </label>
                         <strong><i class="start">起</i><div>{{list.startName}}<em>{{list.startAddress}}</em></div></strong>
                         <strong><i class="end">终</i><div>{{list.endName}}<em>{{list.endAddress}}</em></div></strong>
                     </div>
                     <a :attr="{href:'tel:'+list.phone}"><img src="../source/img/tel.png"></a>
                 </div>
-                <div class="car-list-info" :if="list.remark">
+                <div class="car-list-info" :visible="list.remark">
                     {{list.remark}}
                 </div>
             </li>
-            <li class="car-none" ms-if="@isDone">已经加载完毕</li>
+            <li class="car-none" :if="@isDone">已经加载完毕</li>
         </ul>
     </section>
     <footer>

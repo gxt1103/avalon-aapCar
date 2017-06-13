@@ -232,6 +232,9 @@ let vm = avalon.define({
 		}else{
 			window.location.href = "sign.html?next=publish.html?type=" + val;
 		}
+	},
+	detail: function(id){
+		window.location.href = "map.html?id=" + id;
 	}
 });
 

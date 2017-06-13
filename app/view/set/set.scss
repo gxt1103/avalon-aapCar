@@ -1,0 +1,58 @@
+@charset "utf-8";
+@import "compass/typography";
+@import "compass/css3";
+
+.header-top{
+	background:#fff;
+	padding:1rem;
+	text-align:center;
+	strong{
+		font-size:1.2rem;
+	}
+	a{
+		color:#0c61ff;
+		float:left;
+		font-size:1.2rem;
+		text-decoration:none;
+	}
+}
+.personal-list{
+	background:#fff;
+	border-bottom:1px solid #ddd;
+	border-top:1px solid #ddd;
+	margin-top:1.2rem;
+	em{
+		color:#999;
+		float:right;
+		margin-right:10px;
+		margin-top:1.8rem;
+	}
+	ul{
+		
+		li{
+			border-top:1px solid #ddd;
+			color:#999;
+			font-size:0.8rem;
+			padding:1.2rem 10px;
+			text-align:right;
+			b{
+				color:#666;
+				float:left;
+				font-size:1rem;
+			}
+			&:first-child{
+				border:0;
+			}
+		}
+	}
+}
+.personal-lists{
+	background:#fff;
+	border-bottom:1px solid #ddd;
+	border-top:1px solid #ddd;
+	color:#0c61ff;
+	margin-top:1rem;
+	padding:1.2rem 10px;
+	padding-right:0;
+	text-align:center;
+}

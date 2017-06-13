@@ -36,7 +36,13 @@
         <h1>行程信息(必填)</h1>
         <ul>
             <li><b>联系电话：</b><strong :if="@tel">{{@tel}}</strong><em :if="!@tel">请设置</em><i class="icon-left-right" :if="!@tel">></i></li>
-            <li ms-on-tap="@selectDime($event)"><b>出发时间：</b><span :visible="@timeName">{{@timeName}}</span><em :if="!@timeName">请设置</em><i class="icon-left-right"></i></li>
+            <li>
+                <b>出发时间：</b>
+                <!-- <span :visible="@timeName">{{@timeName}}</span> -->
+                <input type="text" :attr="{value:@timeName}" id="select_out_time" readonly>
+                <!-- <em :if="!@timeName">请设置</em> -->
+                <i class="icon-left-right"></i>
+            </li>
             <li ms-on-tap="@slectAddress(0)"><b>出发地：</b><span :visible="@start">{{@start}}</span><em :if="!@start">请设置</em><i class="icon-left-right"></i></li>
             <li ms-on-tap="@slectAddress(1)"><b>目的地：</b><span :visible="@end">{{@end}}</span><em :if="!@end">请设置</em><i class="icon-left-right"></i></li>
             <li ms-on-tap="@selectMode"><b>类型：</b><span :visible="@mode">{{@mode}}</span><em :if="!@mode">请设置</em><i class="icon-left-right"></i></li>
@@ -90,9 +96,31 @@
 
         </div>
     </div>
+    <div class="select-time select-times" :visible="@isSelectDate">
+        <b ms-on-tap="@cancelDate">取消</b>
+        <span ms-on-tap="@confirmDate">确认</span>
+        <div class="select-time-ul select-time-uls" id="select_hour">
+            <ul>
+                <li>&nbsp;</li>
+                <li :for="list in @selectHour" :attr="{'data-type':list.types}">{{list.names}}</li>
+                <li>&nbsp;</li>
+            </ul>
+        </div>
+        <div class="select-time-ul select-time-uls select-min" id="select_min">
+            <ul>
+                <li>&nbsp;</li>
+                <li :for="list in @selectMin" :attr="{'data-type':list.types}">{{list.names}}</li>
+                <li>&nbsp;</li>
+            </ul>
+        </div>
+        <div class="select-time-border">
+
+        </div>
+    </div>
     <div class="alert-info" :if="@isAlert">
         {{@alertInfo}}
     </div>
+    <div class="screen" id="calendar_screen" :visible="@isCalendar"></div>
     <script src="./dll/vendor.js"></script>
 </body>
 </html>

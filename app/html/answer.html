@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>临港拼车</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--开启对web app的支持-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--主要是正对苹果手机将数字自动识别为号码-->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 忽略识别邮箱，主要是针对安卓手机会自动将符合邮箱格式的字符串识别为邮箱地址-->
+    <meta content="email=no" name="format-detection" />
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+</head>
+
+<body ms-controller="carApp" class="ms-controller">
+    <header>
+        <div class="header-top"><a class="icon-left-1" href="set.html"></a><strong>意见反馈</strong><b ms-on-tap="@submitInfo">提交</b></div>
+    </header>
+    <section>
+        <div class="start">
+            <i class="icon-star" ms-on-tap="@selectStar(1)"></i>
+            <i class="icon-star" ms-on-tap="@selectStar(2)"></i>
+            <i class="icon-star" ms-on-tap="@selectStar(3)"></i>
+            <i class="icon-star" ms-on-tap="@selectStar(4)"></i>
+            <i class="icon-star" ms-on-tap="@selectStar(5)"></i>
+        </div>
+        <textarea :duplex="@content"></textarea>
+    </section>
+    <div class="alert-info" :if="@isAlert">
+        {{@alertInfo}}
+    </div>
+    <script src="./dll/vendor.js"></script>
+</body>
+</html>

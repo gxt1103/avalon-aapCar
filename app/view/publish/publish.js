@@ -9,12 +9,14 @@ let vm = avalon.define({
 	isSelectTime: false,
 	isAddress: false,
 	isAlert: false,
+	isCalendar: false,
+	isSelectDate: false,
 	alertInfo: "",
 	addressType: "",
 	mode: "",
 	modeType: "",
-	timeName: "",
-	serviceTime: "",
+	timeName: "请设置",
+	serviceTime: [],
 	title: "",
 	tel: "",
 	start: "",
@@ -26,6 +28,7 @@ let vm = avalon.define({
 	currentVal: 2,
 	returnUrl: "index.html",
 	mapList: [],
+	timeArray: [],
 	modeData: [{
 		types: 2,
 		names: "车找人",
@@ -69,6 +72,10 @@ let vm = avalon.define({
 		types: "9",
 		names: "+/-2小时"
 	}],
+	selectHour: [],
+	selectMin: [],
+	currentHour: "",
+	currentMin: "",
 	isOften: false,
 	startLat: "",
 	startLng: "",
@@ -113,23 +120,48 @@ let vm = avalon.define({
 	selectMode: function() {
 		this.isSelectType = true;
 	},
-	selectDime: function(event) {
+	confirmDate: function() {
 		var _this = this;
-		$(event.target).date({
-			theme: "datetime"
-		}, function(val) {
-			_this.serviceTime = val;
-			var times = new Date(val);
-			var weeks = new Array("日", "一", "二", "三", "四", "五", "六");
-			var weekDays = times.getDay();
-			var month = times.getMonth() + 1;
+		_this.serviceTime.removeAll();
+		var val;
+		var hours = _this.currentHour;
+		var mins = _this.currentMin;
+		if (hours < 10) {
+			hours = "0" + hours;
+		}
+		if (mins < 10) {
+			mins = "0" + mins;
+		}
+		val = hours + ":" + mins;
+		if (_this.timeArray.length > 1) {
+			for (var i = 0; i < _this.timeArray.length; i++) {
+				var datestr = _this.timeArray[i] + " " + val;
+				_this.serviceTime.push(datestr);
+			}
+			_this.timeName = "多个日期" + val;
+		} else {
+			var dates = _this.timeArray[0] + " " + val;
+			_this.serviceTime.push(dates);
+			var times = new Date(_this.timeArray[0]);
+			var months = times.getMonth() + 1;
 			var days = times.getDate();
-			var hours = times.getHours();
-			var minutes = times.getMinutes();
-			var weekDay = "周" + weeks[weekDays];
-			var datestr = month + "月" + days + "日" + "(" + weekDay + ")" + " " + hours + ":" + minutes;
-			_this.timeName = datestr
-		});
+			if (months < 10) {
+				months = "0" + months;
+			}
+			if (days < 10) {
+				days = "0" + days;
+			}
+			_this.timeName = months + "月" + days + "日" + val;
+		}
+		_this.isSelectDate = false;
+		$("#calendar_screen").hide();
+	},
+	cancelDate: function() {
+		var _this = this;
+		_this.isSelectDate = false;
+		_this.currentHour = "";
+		_this.currentMin = "";
+		$("#calendar_screen").hide();
 	},
 	selectType: function(val) {
 		if (val == "1") {
@@ -183,7 +215,7 @@ let vm = avalon.define({
 			this.title = "目的地";
 		}
 		var headerHeight = $("header").height();
-		var footerHeight = $(".publish-address").height();
+		var footerHeight = $(".address-search").height();
 		var windowHeight = $(window).height();
 		// var clientWidth = $(window).width();
 		// var fontSize = 50 * ((clientWidth >= 750 ? 750 : clientWidth) / 320) + 'px';
@@ -253,9 +285,11 @@ let vm = avalon.define({
 			_this.end = names;
 		}
 		_this.mapList.removeAll();
+		_this.baseTitle();
 		_this.isAddress = false;
 	},
 	closeAddress: function() {
+		this.baseTitle();
 		this.isAddress = false;
 	},
 	alertInfos: function(val, callback) {
@@ -271,7 +305,7 @@ let vm = avalon.define({
 	},
 	publishInfo: function() {
 		var _this = this;
-		if (_this.serviceTime == "") {
+		if (_this.serviceTime.length == 0) {
 			_this.alertInfo("请选择出发时间");
 			return;
 		}
@@ -287,10 +321,12 @@ let vm = avalon.define({
 			_this.alertInfo("请选择类型");
 			return;
 		}
+		var serviceTime = _this.serviceTime;
+		serviceTime = serviceTime.toString();
 		var data = {
 			sessionid: _this.sessionid,
 			phone: _this.tel,
-			serviceTime: _this.serviceTime,
+			serviceTime: serviceTime,
 			timeError: _this.timeType,
 			validTime: 30,
 			isOften: _this.isNormal,
@@ -320,32 +356,9 @@ let vm = avalon.define({
 			}
 		});
 	},
-	readyLoad: function() {
+	baseTitle: function() {
 		var _this = this;
 		var types = utils.parseLocation("type");
-		//判断是否登录
-		var loginUrl = "http://maomap.com/Api/userinfo/fetchuserinfo/?output=jsonp";
-		var userId = $.cookie("userId");
-		if (userId) {
-			var data = {
-				userid: userId
-			};
-			utils.get(loginUrl, data, function(data) {
-				if (data.errno == 0) {
-					_this.isLogined = true;
-					_this.tel = data.data.phone
-					_this.sessionid = data.data.userid;
-				} else {
-					_this.alertInfo(data.errmsg, function(){
-						window.location.href = "index.html";
-					});
-				}
-			});
-
-		} else {
-			_this.isLogined = false;
-			window.location.href = "index.html";
-		}
 		_this.types = types;
 		switch (types) {
 			case "0":
@@ -363,7 +376,112 @@ let vm = avalon.define({
 			default:
 				this.title = "免费";
 		}
+	},
+	readyLoad: function() {
+		var _this = this;
+		//判断是否登录
+		var loginUrl = "http://maomap.com/Api/userinfo/fetchuserinfo/?output=jsonp";
+		var userId = $.cookie("userId");
+		if (userId) {
+			var data = {
+				userid: userId
+			};
+			utils.get(loginUrl, data, function(data) {
+				if (data.errno == 0) {
+					_this.isLogined = true;
+					_this.tel = data.data.phone
+					_this.sessionid = data.data.userid;
+				} else {
+					_this.alertInfo(data.errmsg, function() {
+						window.location.href = "index.html";
+					});
+				}
+			});
+
+		} else {
+			_this.isLogined = false;
+			window.location.href = "index.html";
+		}
+		_this.baseTitle();
 		_this.locationMap();
+		$("#select_out_time").focus(function() {
+			_this.isCalendar = true;
+		});
+		$("#select_out_time").datepicker({
+			dateFormat: "yy-mm-dd",
+			numberOfMonths: 12,
+			showButtonPanel: true,
+			showMonthAfterYear: true,
+			closeText: "确定",
+			currentText: "取消",
+			monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+			dayNamesMin: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+			onSelect: function(dateText, ins) {
+				if (_this.timeArray.indexOf(dateText) == -1) {
+					_this.timeArray.push(dateText);
+				} else {
+					_this.timeArray.splice(_this.timeArray.indexOf(dateText), 1);
+				}
+			},
+			onConfirm: function() {
+				// $("#dateshadow").show();
+				// $("#datePage").show();
+				if (_this.selectHour.length == 0) {
+					for (var i = 0; i < 24; i++) {
+						var mm = i + 1;
+						var parms = {
+							types: mm,
+							names: mm + "时"
+						};
+						_this.selectHour.push(parms);
+					}
+				}
+				if (_this.selectMin.length == 0) {
+					for (var i = 0; i < 60; i++) {
+						var min = i;
+						var minText = i;
+						if (minText < 10) {
+							minText = "0" + minText + "分";
+						} else {
+							minText = minText + "分";
+						}
+						var parms = {
+							types: min,
+							names: minText
+						};
+						_this.selectMin.push(parms);
+					}
+				}
+				var dateTime = new Date();
+				var hours = dateTime.getHours() - 1;
+				var mins = dateTime.getMinutes();
+				$("#calendar_screen").show();
+				_this.isSelectDate = true;
+				var scrollHour = new iScroll("select_hour", {
+					snap: "li",
+					vScrollbar: false,
+					fixedScrollbar: true,
+					onScrollEnd: function() {
+						var index = parseInt((this.y / 60) * (-1));
+						_this.currentHour = _this.selectHour[index].types;
+					}
+				});
+				scrollHour.refresh();
+				scrollHour.scrollTo(0, hours * 60, 100, true);
+				var scrollMin = new iScroll("select_min", {
+					snap: "li",
+					vScrollbar: false,
+					fixedScrollbar: true,
+					onScrollEnd: function() {
+						var index = parseInt((this.y / 60) * (-1));
+						_this.currentMin = _this.selectMin[index].types;
+					}
+				});
+				scrollMin.refresh();
+				scrollMin.scrollTo(0, mins * 60, 100, true);
+			}
+		});
+
 	}
 
 });

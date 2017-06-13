@@ -24,39 +24,26 @@
 
 <body ms-controller="carApp" class="ms-controller">
     <header>
-        <div class="header-top"><strong>我</strong></div>
+        <div class="header-top"><a class="icon-left-1" href="set.html"></a><strong>关于我们</strong></div>
     </header>
     <section>
-        <div class="personal-list" ms-on-tap="@personalInfo">
-           <span><label>临港</label></span>
-           <strong>{{@userName?@userName:'登录'}}</strong>
-           <em> <i class="icon-left-right"></i> </em>
+        <div class="about-logo">
+           <span>
+              <label>临港</label>
+           </span>
         </div>
         <div class="personal-list">
            <ul>
-               <li ms-on-tap="@login"><b>手机号</b> {{@tel?@tel:'登录'}} <i class="icon-left-right"></i> </li>
-               <li ms-on-tap="@selectAddress"><b>常用地址</b> 家/公司/上下班时间 <i class="icon-left-right"></i> </li>
-               <li ms-on-tap="@selectTrap"><b>我的行程</b> <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@selectInfo({text:'',title:'公众号'})"><b>公众号</b> 上海临港生活 <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@selectInfo({text:'1661162303',title:'QQ'})"><b>QQ</b> 1661162303 <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@selectInfo({text:'348529908',title:'QQ群'})"><b>QQ群</b> 348529908 <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@selectInfo({text:'lingangpinche@126.com',title:'邮箱'})"><b>邮箱</b> lingangpinche@126.com <i class="icon-left-right"></i> </li>
            </ul>
         </div>
-        <!-- <div class="personal-lists" ms-on-tap="@bindAccount">
-           第三方账户绑定
-           <em>微信/微博/QQ <i class="icon-left-right"></i> </em>
-        </div> -->
-        <div class="personal-lists" ms-on-tap="@set">
-           设置
-           <em> <i class="icon-left-right"></i> </em>
-        </div>
+      
     </section>
     <footer>
-        <a class="footer-list" href="index.html">
-            <img src="../source/img/trip.png"><br>
-            行程
-        </a>
-        <a class="footer-list footer-active" href="">
-            <img src="../source/img/personal-active.png"><br>
-            我
-        </a>
+      Version 1.2.1.0 Build 10
     </footer>
     <div class="alert-info" :if="@isAlert">
         {{@alertInfo}}

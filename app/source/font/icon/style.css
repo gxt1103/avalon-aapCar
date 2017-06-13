@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?8yrj8s');
-  src:  url('fonts/icomoon.eot?8yrj8s#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?8yrj8s') format('truetype'),
-    url('fonts/icomoon.woff?8yrj8s') format('woff'),
-    url('fonts/icomoon.svg?8yrj8s#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?nwfcqa');
+  src:  url('fonts/icomoon.eot?nwfcqa#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?nwfcqa') format('truetype'),
+    url('fonts/icomoon.woff?nwfcqa') format('woff'),
+    url('fonts/icomoon.svg?nwfcqa#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -59,4 +59,7 @@
 .icon-train-1:before {
   content: "\e908";
   color: #37c97f;
+}
+.icon-star:before {
+  content: "\f02a";
 }

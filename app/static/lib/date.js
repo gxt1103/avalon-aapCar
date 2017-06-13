@@ -43,32 +43,67 @@
                 theme: "date", //控件样式（1：日期，2：日期+时间）
                 mode: null, //操作模式（滑动模式）
                 event: "click", //打开日期插件默认方式为点击后后弹出日期 
-                show: true
+                show: true,
+                isShow: false
             }
             //用户选项覆盖插件默认选项   
         var opts = $.extend(true, {}, $.fn.date.defaultOptions, options);
         if (opts.theme === "datetime") {
             datetime = true;
         }
-        if (!opts.show) {
-            that.unbind('click');
-        }
-        /*www.sucaijiayuan.com*/
-        else {
-            //绑定事件（默认事件为获取焦点）
-            that.bind(opts.event, function() {
-                createUL(); //动态生成控件显示的日期
-                init_iScrll(); //初始化iscrll
-                extendOptions(); //显示控件
-                that.blur();
-                if (datetime) {
-                    showdatetime();
-                    refreshTime();
-                }
+        if(!opts.isShow){
+            if (!opts.show) {
+                that.unbind('click');
+            }
+            /*www.sucaijiayuan.com*/
+            else {
+                //绑定事件（默认事件为获取焦点）
+                that.bind(opts.event, function() {
+                    createUL(); //动态生成控件显示的日期
+                    init_iScrll(); //初始化iscrll
+                    extendOptions(); //显示控件
+                    that.blur();
+                    // if (datetime) {
+                    //     showdatetime();
+                    //     refreshTime();
+                    // }
+                    // refreshDate();
+                    if (opts.theme === "date") {
+                        refreshDate();
+                    } else if (opts.theme === "time") {
+                        showTime();
+                        refreshTime();
+                    } else {
+                        showdatetime();
+                        refreshTime();
+                        refreshDate();
+                    }
+                    bindButton();
+                })
+            }
+        }else{
+            createUL(); //动态生成控件显示的日期
+            init_iScrll(); //初始化iscrll
+            // extendOptions(); //显示控件
+            that.blur();
+            // if (datetime) {
+            //     showdatetime();
+            //     refreshTime();
+            // }
+            // refreshDate();
+            if (opts.theme === "date") {
                 refreshDate();
-                bindButton();
-            })
-        };
+            } else if (opts.theme === "time") {
+                showTime();
+                refreshTime();
+            } else {
+                showdatetime();
+                refreshTime();
+                refreshDate();
+            }
+            bindButton();
+        }
+        
 
         function refreshDate() {
             yearScroll.refresh();
@@ -115,21 +150,52 @@
             resetIndex();
             $("#dateconfirm").unbind('click').click(function() {
                 var datestr = "";
-                var years = $("#yearwrapper ul li:eq(" + indexY + ")").html().substr(0, $("#yearwrapper ul li:eq(" + indexY + ")").html().length - 1);
-                var month = $("#monthwrapper ul li:eq(" + indexM + ")").html().substr(0, $("#monthwrapper ul li:eq(" + indexM + ")").html().length - 1);
-                var days = $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().substr(0, $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().length - 1);
-                var time = years + "-" + month + "-" + days;
-                // time = time.replace(/-/g, ':').replace(' ', ':');
-                // time = time.split(':');
-               
-                datestr = time;
+                // var years = $("#yearwrapper ul li:eq(" + indexY + ")").html().substr(0, $("#yearwrapper ul li:eq(" + indexY + ")").html().length - 1);
+                // var month = $("#monthwrapper ul li:eq(" + indexM + ")").html().substr(0, $("#monthwrapper ul li:eq(" + indexM + ")").html().length - 1);
+                // var days = $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().substr(0, $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().length - 1);
+                // var time = years + "-" + month + "-" + days;
 
-                if (datetime) {
-                    // if (Math.round(indexS) === 1) { //下午
-                    //     $("#Hourwrapper ul li:eq(" + indexH + ")").html(parseInt($("#Hourwrapper ul li:eq(" + indexH + ")").html().substr(0, $("#Hourwrapper ul li:eq(" + indexH + ")").html().length - 1)) + 12)
-                    // } else {
-                    //     $("#Hourwrapper ul li:eq(" + indexH + ")").html(parseInt($("#Hourwrapper ul li:eq(" + indexH + ")").html().substr(0, $("#Hourwrapper ul li:eq(" + indexH + ")").html().length - 1)))
+                // datestr = time;
+
+                // if (datetime) {
+
+                //     var hours = $("#Hourwrapper ul li:eq(" + indexH + ")").html();
+                //     var minutes = $("#Minutewrapper ul li:eq(" + indexI + ")").html();
+                //     datestr += " " + hours.substr(0, hours.length - 1) + ":" + minutes.substr(0, minutes.length - 1);
+                //     indexS = 0;
+                // }
+
+                if (opts.theme === "date") {
+                    var years = $("#yearwrapper ul li:eq(" + indexY + ")").html().substr(0, $("#yearwrapper ul li:eq(" + indexY + ")").html().length - 1);
+                    var month = $("#monthwrapper ul li:eq(" + indexM + ")").html().substr(0, $("#monthwrapper ul li:eq(" + indexM + ")").html().length - 1);
+                    var days = $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().substr(0, $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().length - 1);
+                    var time = years + "-" + month + "-" + days;
+                    // time = time.replace(/-/g, ':').replace(' ', ':');
+                    // time = time.split(':');
+
+                    datestr = time;
+                } else if (opts.theme === "time") {
+                    var hoursHtml = $("#Hourwrapper ul li:eq(" + indexH + ")").html();
+                    var minutesHtml = $("#Minutewrapper ul li:eq(" + indexI + ")").html();
+                    var hours = hoursHtml.substr(0, hoursHtml.length - 1);
+                    var minutes = minutesHtml.substr(0, minutesHtml.length - 1);
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    // if (minutes < 10) {
+                    //     minutes = "0" + minutes;
                     // }
+                    datestr += hours + ":" + minutes;
+                    indexS = 0;
+                } else {
+                    var years = $("#yearwrapper ul li:eq(" + indexY + ")").html().substr(0, $("#yearwrapper ul li:eq(" + indexY + ")").html().length - 1);
+                    var month = $("#monthwrapper ul li:eq(" + indexM + ")").html().substr(0, $("#monthwrapper ul li:eq(" + indexM + ")").html().length - 1);
+                    var days = $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().substr(0, $("#daywrapper ul li:eq(" + Math.round(indexD) + ")").html().length - 1);
+                    var time = years + "-" + month + "-" + days;
+                    // time = time.replace(/-/g, ':').replace(' ', ':');
+                    // time = time.split(':');
+
+                    datestr = time;
                     var hours = $("#Hourwrapper ul li:eq(" + indexH + ")").html();
                     var minutes = $("#Minutewrapper ul li:eq(" + indexI + ")").html();
                     datestr += " " + hours.substr(0, hours.length - 1) + ":" + minutes.substr(0, minutes.length - 1);
@@ -145,8 +211,14 @@
                 } else {
                     Ycallback(datestr);
                 }
-                $("#datePage").remove();
-                $("#dateshadow").remove();
+                if(opts.isShow){
+                    $("#datePage").hide();
+                    $("#dateshadow").hide();
+                }else{
+                    $("#datePage").remove();
+                    $("#dateshadow").remove();
+                }
+                
             });
             $("#datecancle").click(function() {
                 $("#datePage").hide();
@@ -204,6 +276,14 @@
             // $("#Secondwrapper ul").html(createSECOND_UL());
         }
 
+        function showTime() {
+            init_iScroll_datetime();
+            addTimeStyles();
+            $("#datescroll").hide();
+            $("#datescroll_datetime").show();
+            $("#Hourwrapper ul").html(createHOURS_UL());
+            $("#Minutewrapper ul").html(createMINUTE_UL());
+        }
         //日期+时间滑动
         function init_iScroll_datetime() {
             HourScroll = new iScroll("Hourwrapper", {
@@ -302,6 +382,16 @@
             $("#monthwrapper").css("bottom", "200px");
             $("#daywrapper").css("position", "absolute");
             $("#daywrapper").css("bottom", "200px");
+        }
+
+        function addTimeStyles() {
+            $("#datePage").css("height", "240px");
+            $("#datePage").css("top", "60px");
+            $("#timemark").hide();
+            $("#Hourwrapper, #Minutewrapper").css({
+                "top": "60px",
+                "bottom": "60px"
+            });
         }
         //创建 --年-- 列表
         function createYEAR_UL() {

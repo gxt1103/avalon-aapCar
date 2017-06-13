@@ -24,40 +24,19 @@
 
 <body ms-controller="carApp" class="ms-controller">
     <header>
-        <div class="header-top"><strong>我</strong></div>
+        <div class="header-top"><a class="icon-left-1" href="personal.html"></a><strong>设置</strong></div>
     </header>
     <section>
-        <div class="personal-list" ms-on-tap="@personalInfo">
-           <span><label>临港</label></span>
-           <strong>{{@userName?@userName:'登录'}}</strong>
-           <em> <i class="icon-left-right"></i> </em>
-        </div>
         <div class="personal-list">
            <ul>
-               <li ms-on-tap="@login"><b>手机号</b> {{@tel?@tel:'登录'}} <i class="icon-left-right"></i> </li>
-               <li ms-on-tap="@selectAddress"><b>常用地址</b> 家/公司/上下班时间 <i class="icon-left-right"></i> </li>
-               <li ms-on-tap="@selectTrap"><b>我的行程</b> <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@answer"><b>意见反馈</b> 吐槽 <i class="icon-left-right"></i> </li>
+               <li ms-on-tap="@about"><b>关于我们</b> <i class="icon-left-right"></i> </li>
            </ul>
         </div>
-        <!-- <div class="personal-lists" ms-on-tap="@bindAccount">
-           第三方账户绑定
-           <em>微信/微博/QQ <i class="icon-left-right"></i> </em>
-        </div> -->
-        <div class="personal-lists" ms-on-tap="@set">
-           设置
-           <em> <i class="icon-left-right"></i> </em>
+        <div class="personal-lists" ms-on-tap="@loginOut">
+           {{@isLogined?"退出登录":"登录"}}
         </div>
     </section>
-    <footer>
-        <a class="footer-list" href="index.html">
-            <img src="../source/img/trip.png"><br>
-            行程
-        </a>
-        <a class="footer-list footer-active" href="">
-            <img src="../source/img/personal-active.png"><br>
-            我
-        </a>
-    </footer>
     <div class="alert-info" :if="@isAlert">
         {{@alertInfo}}
     </div>

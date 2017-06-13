@@ -1,0 +1,42 @@
+@charset "utf-8";
+@import "compass/typography";
+@import "compass/css3";
+
+.header-top{
+	background:#fff;
+	padding:1rem;
+	text-align:center;
+	strong{
+		font-size:1.2rem;
+	}
+	a{
+		color:#0c61ff;
+		float:left;
+		font-size:1.2rem;
+		text-decoration:none;
+	}
+	b{
+		color:#0c61ff;
+		float:right;
+		font-size:1.2rem;
+	}
+}
+.start{
+	padding:1rem 0;
+	text-align:center;
+	i{
+		color:#999;
+		font-size:2.5rem;
+		margin-right:0.6rem;
+	}
+	.active{
+		color:orange;
+	}
+}
+textarea{
+	border:0;
+	background:#fff;
+	height:5rem;
+	padding:10px;
+	width:94%;
+}

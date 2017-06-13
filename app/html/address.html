@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>临港拼车</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--开启对web app的支持-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!--主要是正对苹果手机将数字自动识别为号码-->
+    <meta name="format-detection" content="telephone=no" />
+    <!-- 忽略识别邮箱，主要是针对安卓手机会自动将符合邮箱格式的字符串识别为邮箱地址-->
+    <meta content="email=no" name="format-detection" />
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=425cc838ddc2f2ac540baf48e7265a16"></script> 
+</head>
+
+<body ms-controller="carApp" class="ms-controller">
+    <header>
+        <div class="header-top">
+            <a class="icon-left-1" href="personal.html" :if="!@isAddress"></a>
+            <a class="icon-left-1" href="javascript:void(0);" :if="@isAddress" ms-on-tap="@closeAddress"></a>
+            <strong>{{@title}}</strong>
+            <b ms-on-tap="@submitInfo" :if="!@isAddress">提交</b>
+            <b :if="@isAddress" ms-on-tap="@confirmAddress">确定</b>
+        </div>
+    </header>
+    <section :visible="!@isAddress">
+        <ul class="address-list-info">
+            <li ms-on-tap="@slectAddress(0)">
+                <strong>家庭地址</strong>
+                <label>{{@homeName}}</label>
+                <em>{{@homeAddress}}</em>
+                <i class="icon-left-right"></i>
+            </li>
+            <li ms-on-tap="@slectAddress(1)">
+                <strong>公司地址</strong>
+                <label>{{@companyName}}</label>
+                <em>{{@companyAddress}}</em>
+                <i class="icon-left-right"></i>
+            </li>
+        </ul>
+        <ul class="time-list">
+            <li ms-on-tap="@selectDime(0)">
+                上班时间 (打卡时间)
+                <label>{{@workTime}}<i class="icon-left-right"></i></label>
+            </li>
+            <li ms-on-tap="@selectDime(1)">
+                下班时间 (打卡时间)
+                <label>{{@homeTime}}<i class="icon-left-right"></i></label>
+            </li>
+        </ul>
+
+    </section>
+
+    <div class="publish-address" :if="@isAddress">
+        <div class="address-search">
+            <input type="text" placeholder="小区、交叉路口、门牌号、公交站、楼宇" ms-on-focus="@searchList($event)" ms-on-blur="@searchBlur">
+        </div>
+        <div class="address-list">
+            <ul>
+                <li ms-on-tap="@selectLi($event)" :for="list in @mapList" :attr="{'data-location':list.location,'data-name':list.name,'data-address':list.address}">{{list.name}}<br>{{list.address}}</li>
+            </ul>
+        </div>
+    </div>
+    
+     <div class="select-time select-times" :visible="@isSelectDate">
+        <b ms-on-tap="@cancelDate">取消</b>
+        <span ms-on-tap="@confirmDate">确认</span>
+        <div class="select-time-ul select-time-uls" id="select_hour">
+            <ul>
+                <li>&nbsp;</li>
+                <li :for="list in @selectHour" :attr="{'data-type':list.types}">{{list.names}}</li>
+                <li>&nbsp;</li>
+            </ul>
+        </div>
+        <div class="select-time-ul select-time-uls select-min" id="select_min">
+            <ul>
+                <li>&nbsp;</li>
+                <li :for="list in @selectMin" :attr="{'data-type':list.types}">{{list.names}}</li>
+                <li>&nbsp;</li>
+            </ul>
+        </div>
+        <div class="select-time-border">
+
+        </div>
+    </div>
+    <div class="screen" :visible="@isShow"></div>
+    <div class="alert-info" :if="@isAlert">
+        {{@alertInfo}}
+    </div>
+    <script src="./dll/vendor.js"></script>
+</body>
+</html>
